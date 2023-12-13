@@ -24,6 +24,11 @@ public:
     /**
      * @enum Number
      * @brief USART numbers.
+     *
+     * @note For STM32F1xx and HK32F103x ports start from index 1 (USART1). 
+     *       For GD32F10x ports start from index 0, therefore on it
+     *       to create USART0 resource you must pass USART1,
+     *       to create USART1 resource you must pass USART2, and etc.
      */
     enum Number
     {

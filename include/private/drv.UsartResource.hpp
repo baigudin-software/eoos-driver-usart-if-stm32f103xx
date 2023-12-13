@@ -104,7 +104,7 @@ protected:
 private:
 
     /**
-     * Constructs this object.
+     * @brief Constructs this object.
      *
      * @return true if object has been constructed successfully.
      */
@@ -233,9 +233,9 @@ api::OutStream<char_t>& UsartResource<A>::operator<<(char_t const* source)
 {
     if( isConstructed() )
     {
+        lib::Guard<A> const guard(mutex_);        
         while( *source != '\0' )
         {
-            lib::Guard<A> const guard(mutex_);
             volatile uint32_t txe( 0 );
             do 
             {
@@ -386,12 +386,20 @@ void UsartResource<A>::configurePort()
             data_.reg.rcc->apb2enr.bit.iopaen = 1; // IO port A clock enabled
             int32_t const index( cpu::Registers::INDEX_GPIOA );            
             cpu::reg::Gpio::Crl crl( data_.reg.gpio[index]->crl.value );
-            // USART1_TX port PA0
-            crl.bit.cnf0 = 2;       // Multiplexed function push-pull output mode
-            crl.bit.mode0 = 2;      // Output mode, maximum speed 2 MHz
-            // USART1_RX port PA1
-            crl.bit.cnf1 = 1;       // Floating input mode (state after reset)
-            crl.bit.mode1 = 0;      // Input mode (state after reset)
+            // @note For HK32F103xCxDxE here might be a mistake with the ports:
+            //            | HK  | ST/GD |
+            // USART2_TX  | PA0 | PA2   |
+            // USART2_RX  | PA1 | PA3   |
+            // USART2_CK  | PA2 | PA4   |
+            // USART2_CTS | PA3 | PA0   |
+            // USART2_RTS | PA4 | PA1   |
+            // @todo If so, here is reimplementation needed to configure ports for a specific MCU.
+            // USART1_TX port PA2
+            crl.bit.cnf2 = 2;       // Multiplexed function push-pull output mode
+            crl.bit.mode2 = 2;      // Output mode, maximum speed 2 MHz
+            // USART1_RX port PA3
+            crl.bit.cnf3 = 1;       // Floating input mode (state after reset)
+            crl.bit.mode3 = 0;      // Input mode (state after reset)
             data_.reg.gpio[index]->crl.value = crl.value;
             break;
         }

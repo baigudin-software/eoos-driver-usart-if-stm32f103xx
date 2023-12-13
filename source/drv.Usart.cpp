@@ -32,13 +32,17 @@ static UsartController* getController()
     
 Usart* Usart::create(SerialLineConfig const& config)
 {
-    UsartController* const controller( getController() );    
-    lib::UniquePointer<Usart> res( controller->createResource(config) );
-    if( !res.isNull() )
-    {
-        if( !res->isConstructed() )
+    lib::UniquePointer<Usart> res;
+    UsartController* const controller( getController() );
+    if( controller != NULLPTR )
+    {    
+        res.reset( controller->createResource(config) );
+        if( !res.isNull() )
         {
-            res.reset();
+            if( !res->isConstructed() )
+            {
+                res.reset();
+            }
         }
     }
     return res.release();

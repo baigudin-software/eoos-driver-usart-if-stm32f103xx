@@ -41,7 +41,7 @@ public:
 
     /**
      * @enum Mode
-     * @brief USART numbers.
+     * @brief USART modes.
      */
     enum Mode
     {

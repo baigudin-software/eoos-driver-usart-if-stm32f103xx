@@ -1,7 +1,7 @@
 /**
  * @file      drv.UsartController.hpp
  * @author    Sergey Baigudin, sergey@baigudin.software
- * @copyright 2023, Sergey Baigudin, Baigudin Software
+ * @copyright 2023-2024, Sergey Baigudin, Baigudin Software
  */  
 #ifndef DRV_USARTCONTROLLER_HPP_
 #define DRV_USARTCONTROLLER_HPP_
@@ -10,7 +10,7 @@
 #include "drv.UsartDefinitions.hpp"
 #include "lib.NonCopyable.hpp"
 #include "lib.NoAllocator.hpp"
-#include "lib.Mutex.hpp"
+#include "sys.Mutex.hpp"
 #include "lib.ResourceMemory.hpp"
 #include "cpu.Registers.hpp"
 
@@ -124,7 +124,7 @@ private:
         /**
          * @brief Mutex memory resource.
          */    
-        lib::Mutex<lib::NoAllocator> mutex_;
+        sys::Mutex mutex_;
     
     public:
     
